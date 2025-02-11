@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive "I'm Sorry" Animation</title>
+  <style>
+    /* Basic resets */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Full viewport setup */
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f8ff; /* Light blue background */
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    /* The floating sign styling */
+    .floating {
+      position: absolute;
+      background: #fff;
+      border: 2px solid #333;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 1.5em;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      user-select: none;
+
+      /* Floating animation: gently moving up and down */
+      animation: floatAnimation 3s ease-in-out infinite;
+      
+      /* Smooth transitions for interactions */
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    /* Keyframes for the up/down floating animation */
+    @keyframes floatAnimation {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+<body>
+  <!-- The interactive "I'm Sorry" sign -->
+  <div class="floating" id="floating">
+    I'm Sorry
+  </div>
+
+  <script>
+    // Select the floating element
+    const floating = document.getElementById('floating');
+
+    // Function to move the element to a random position within the viewport
+    function moveRandomly() {
+      // Get the viewport dimensions
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      // Get the element's dimensions
+      const rect = floating.getBoundingClientRect();
+      const elWidth = rect.width;
+      const elHeight = rect.height;
+
+      // Calculate random positions ensuring the element remains in view
+      const randomX = Math.random() * (viewportWidth - elWidth);
+      const randomY = Math.random() * (viewportHeight - elHeight);
+
+      // Set the new position
+      floating.style.left = randomX + 'px';
+      floating.style.top = randomY + 'px';
+    }
+
+    // Initially place the sign at a random position
+    moveRandomly();
+
+    // When the mouse hovers over the sign, enlarge it and change background color
+    floating.addEventListener('mouseenter', () => {
+      floating.style.transform = 'scale(1.2)';
+      floating.style.background = '#ffe4e1';  // A light pastel color
+    });
+
+    // When the mouse leaves, revert to the original style
+    floating.addEventListener('mouseleave', () => {
+      floating.style.transform = 'scale(1)';
+      floating.style.background = '#fff';
+    });
+
+    // When the sign is clicked, move it to a new random position
+    floating.addEventListener('click', moveRandomly);
+
+    // For touch devices: move the sign when it is tapped.
+    floating.addEventListener('touchstart', (e) => {
+      // Prevent default touch behavior (like scrolling)
+      e.preventDefault();
+      moveRandomly();
+    });
+  </script>
+</body>
+</html>
